@@ -81,14 +81,20 @@
   (into [:div "tags: "] (comp (mapcat second) (map #(link (tag-page-name %) %)) (interpose " ")) tags))
 
 
-(defn page [contents]
-  (pg/html5 {:lang "en"} [:head] [:body header about-me tags-bar contents]))
+(defn page [content]
+  (pg/html5 {:lang "en"} [:head] [:body header about-me tags-bar content]))
 
 ;post pages
 (doseq [{:keys [metadata html summary-html]} posts]
   (spit
     (str "web/" (:file-name metadata))
-    (page [:div (prev-next-links metadata) summary-html html])))
+    (page [:div
+           [:link {:rel "stylesheet" :href "css/darkula.css"}]
+           [:script {:src "script/highlight.pack.js"}]
+           [:script "hljs.initHighlightingOnLoad();"]
+           (prev-next-links metadata)
+           summary-html
+           html])))
 
 ;tag pages
 (doseq [[count ts] tags tag ts]
