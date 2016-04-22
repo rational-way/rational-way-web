@@ -77,8 +77,12 @@
     (mapcat (fn [[occ vals]] [occ (set (map first vals))]))
     (apply (partial sorted-map-by >))))
 
+(def tags-bar
+  (into [:div "tags: "] (comp (mapcat second) (map #(link (tag-page-name %) %)) (interpose " ")) tags))
+
+
 (defn page [contents]
-  (pg/html5 {:lang "en"} [:head] [:body header about-me contents]))
+  (pg/html5 {:lang "en"} [:head] [:body header about-me tags-bar contents]))
 
 ;post pages
 (doseq [{:keys [metadata html summary-html]} posts]
