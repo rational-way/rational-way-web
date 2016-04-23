@@ -15,7 +15,10 @@
 (def prev-cursor [:metadata :prev])
 (def next-cursor [:metadata :next])
 
-(def header
+(defn link [target & content]
+  [:a {:href target} content])
+
+(def heading
   [:div (link "index.html" [:h1 "my-blog"])])
 
 (def about-me
@@ -24,8 +27,10 @@
    (el/image "img/profile.png" "tomas-zaoral")
    [:p "Clojurian, player, dancer."]])
 
-(defn link [target & content]
-  [:a {:href target} content])
+(def highlight-js-headers
+  [[:link {:rel "stylesheet" :href "css/darkula.css"}]
+   [:script {:src "script/highlight.pack.js"}]
+   [:script "hljs.initHighlightingOnLoad();"]])
 
 (defn tag-page-name [tag]
   (str "tag-" tag "-page.html"))
@@ -81,20 +86,20 @@
   (into [:div "tags: "] (comp (mapcat second) (map #(link (tag-page-name %) %)) (interpose " ")) tags))
 
 
-(defn page [content]
-  (pg/html5 {:lang "en"} [:head] [:body header about-me tags-bar content]))
+(defn page
+  ([content] (page [] content))
+  ([headers content]
+   (pg/html5 {:lang "en"}
+     (into [:head] headers)
+     [:body heading about-me tags-bar content])))
 
 ;post pages
 (doseq [{:keys [metadata html summary-html]} posts]
   (spit
     (str "web/" (:file-name metadata))
-    (page [:div
-           [:link {:rel "stylesheet" :href "css/darkula.css"}]
-           [:script {:src "script/highlight.pack.js"}]
-           [:script "hljs.initHighlightingOnLoad();"]
-           (prev-next-links metadata)
-           summary-html
-           html])))
+    (page
+      highlight-js-headers
+      [:div (prev-next-links metadata) summary-html html])))
 
 ;tag pages
 (doseq [[count ts] tags tag ts]
