@@ -43,22 +43,20 @@
    [:div (link (:file-name metadata) (:name metadata))]
    [:div (str (:author metadata) ", " (tf/unparse date-format (:date metadata)))]
    [:div (link (:file-name metadata) (:desc metadata))]
-   (into [:div]
-     (->> (:tags metadata)
-       (map (fn [tag] (link (tag-page-name tag) tag)))
-       (interpose ", ")))])
+   [:div (->> (:tags metadata) (map (fn [tag] (link (tag-page-name tag) tag))) (interpose ", "))]])
 
 (defn prev-next-links [metadata]
-  (into [:div] (comp (interpose " ") (filter some?))
-    [(when-some [prev (:prev metadata)] (link prev "previous"))
-     (when-some [next (:next metadata)] (link next "next"))]))
+  [:div (->> [(when-some [prev (:prev metadata)] (link prev "previous"))
+              (when-some [next (:next metadata)] (link next "next"))]
+          (filter some?)
+          (interpose " "))])
 
 (defn add-prev-next-links [posts]
   (let [file-names (map #(get-in % file-name-cursor) posts)
-        prev-fnames (conj (drop-last file-names) nil)
-        next-fnames (conj (vec (rest file-names)) nil)
-        posts-prev-next (map vector posts prev-fnames next-fnames)]
-    (map (fn [[post prev next]] (assoc-in (assoc-in post prev-cursor prev) next-cursor next)) posts-prev-next)))
+        next-fnames (conj (drop-last file-names) nil)
+        prev-fnames (conj (vec (rest file-names)) nil)
+        posts-prev-next (map vector posts next-fnames prev-fnames)]
+    (map (fn [[post next prev]] (assoc-in (assoc-in post next-cursor next) prev-cursor prev)) posts-prev-next)))
 
 (def posts
   (->> (file-seq (io/file "resources/posts"))
@@ -83,7 +81,7 @@
     (apply (partial sorted-map-by >))))
 
 (def tags-bar
-  (into [:div "tags: "] (comp (mapcat second) (map #(link (tag-page-name %) %)) (interpose " ")) tags))
+  [:div "tags: " (->> tags (mapcat second) (map #(link (tag-page-name %) %)) (interpose " "))])
 
 
 (defn page
