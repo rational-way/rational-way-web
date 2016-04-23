@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [hiccup "1.0.5"]
                  [markdown-clj "0.9.88"]
-                 [clj-time "0.11.0"]])
+                 [clj-time "0.11.0"]
+                 [environ "1.0.2"]])

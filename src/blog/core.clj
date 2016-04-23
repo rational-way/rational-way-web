@@ -4,9 +4,11 @@
             [clj-time.core :as t]
             [clj-time.format :as tf]
             [clojure.java.io :as io]
-            [clojure.string :as str])
-  (:use [markdown.core :only [md-to-html-string md-to-html-string-with-meta]]))
+            [clojure.string :as str]
+            [markdown.core :refer [md-to-html-string md-to-html-string-with-meta]]
+            [environ.core :refer [env]]))
 
+(def canonical-url (:canonical-url env (str (System/getProperty "user.dir") "/web/")))
 (def date-format (tf/formatters :date))
 (def file-name-cursor [:metadata :file-name])
 (def date-cursor [:metadata :date])
@@ -15,21 +17,24 @@
 (def prev-cursor [:metadata :prev])
 (def next-cursor [:metadata :next])
 
-(defn link [target & content]
-  [:a {:href target} content])
+(defn absolute-url [relative]
+  (str canonical-url relative))
+
+(defn link [relative-target & content]
+  [:a {:href (absolute-url relative-target)} content])
 
 (def heading
-  [:div (link "index.html" [:h1 "my-blog"])])
+  [:div (link "index.html" [:h1 "go-rereverse"])])
 
 (def about-me
   [:div
    [:h3 "About me"]
-   (el/image "img/profile.png" "tomas-zaoral")
+   (el/image (absolute-url "img/profile.png") "tomas-zaoral")
    [:p "Clojurian, player, dancer."]])
 
 (def highlight-js-headers
-  [[:link {:rel "stylesheet" :href "css/darkula.css"}]
-   [:script {:src "script/highlight.pack.js"}]
+  [[:link {:rel "stylesheet" :href (absolute-url "css/darkula.css")}]
+   [:script {:src (absolute-url "script/highlight.pack.js")}]
    [:script "hljs.initHighlightingOnLoad();"]])
 
 (defn tag-page-name [tag]
@@ -108,4 +113,5 @@
                    (filter (fn [post] (some #{tag} (get-in post tags-cursor))))
                    (map :summary-html))]])))
 
+;index page
 (spit "web/index.html" (page [:div (map :summary-html posts)]))
