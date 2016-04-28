@@ -10,4 +10,4 @@
                  [environ "1.0.2"]]
   :plugins [[lein-environ "1.0.2"]]
   :main rationalway.web.core
-  :profiles {:prod {:env {:canonical-url "http://rational-way.com/"}}})
+  :profiles {:prod {:env {:canonical-url "http://rational-way.github.io/"}}})
