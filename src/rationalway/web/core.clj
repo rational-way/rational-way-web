@@ -1,4 +1,4 @@
-(ns blog.core
+(ns rationalway.web.core
   (:require [hiccup.page :as pg]
             [hiccup.element :as el]
             [clj-time.core :as t]
@@ -8,7 +8,8 @@
             [markdown.core :refer [md-to-html-string md-to-html-string-with-meta]]
             [environ.core :refer [env]]))
 
-(def canonical-url (:canonical-url env (str (System/getProperty "user.dir") "/web/")))
+(def local-url (str (System/getProperty "user.dir") "/web/"))
+(def canonical-url (:canonical-url env local-url))
 (def date-format (tf/formatters :date))
 (def file-name-cursor [:metadata :file-name])
 (def date-cursor [:metadata :date])
@@ -24,7 +25,7 @@
   [:a {:href (absolute-url relative-target)} content])
 
 (def heading
-  [:div (link "index.html" [:h1 "go-rereverse"])])
+  [:div (link "index.html" [:h1 "rational-way"])])
 
 (def about-me
   [:div
@@ -64,7 +65,7 @@
     (map (fn [[post next prev]] (assoc-in (assoc-in post next-cursor next) prev-cursor prev)) posts-prev-next)))
 
 (def posts
-  (->> (file-seq (io/file "resources/posts"))
+  (->> (file-seq (io/file "posts"))
     (filter #(.. % (getName) (endsWith ".mmd")))
     (map (fn [file] [(apply str (take-while #(not= \. %) (.getName file))) (slurp file)]))
     (map (fn [[fname file]] (assoc-in (md-to-html-string-with-meta file) file-name-cursor [(str fname ".html")])))
@@ -96,22 +97,28 @@
      (into [:head] headers)
      [:body heading about-me tags-bar content])))
 
-;post pages
-(doseq [{:keys [metadata html summary-html]} posts]
-  (spit
-    (str "web/" (:file-name metadata))
-    (page
-      highlight-js-headers
-      [:div (prev-next-links metadata) summary-html html])))
+(defn -main []
 
-;tag pages
-(doseq [[count ts] tags tag ts]
-  (spit
-    (str "web/" (tag-page-name tag))
-    (page [:div (tag-page-header tag count)
-           [:div (->> posts
-                   (filter (fn [post] (some #{tag} (get-in post tags-cursor))))
-                   (map :summary-html))]])))
+  ;post pages
+  (doseq [{:keys [metadata html summary-html]} posts]
+    (spit
+      (str "web/" (:file-name metadata))
+      (page
+        highlight-js-headers
+        [:div (prev-next-links metadata) summary-html html])))
 
-;index page
-(spit "web/index.html" (page [:div (map :summary-html posts)]))
+  ;tag pages
+  (doseq [[count ts] tags tag ts]
+    (spit
+      (str "web/" (tag-page-name tag))
+      (page [:div (tag-page-header tag count)
+             [:div (->> posts
+                     (filter (fn [post] (some #{tag} (get-in post tags-cursor))))
+                     (map :summary-html))]])))
+
+  ;index page
+  (spit "web/index.html" (page [:div (map :summary-html posts)])))
+
+(comment
+  (-main)
+  )
