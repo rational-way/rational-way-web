@@ -8,4 +8,6 @@
                  [markdown-clj "0.9.88"]
                  [clj-time "0.11.0"]
                  [environ "1.0.2"]]
-  :main rationalway.web.core)
+  :plugins [[lein-environ "1.0.2"]]
+  :main rationalway.web.core
+  :profiles {:prod {:env {:canonical-url "http://rational-way.com/"}}})
