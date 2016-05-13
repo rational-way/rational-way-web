@@ -4,4 +4,4 @@ echo "Deleting local html files" && rm -rfv web/*.html
 echo "Running lein..." && lein with-profile prod run
 echo "Deleting  files from ../rational-way.github.io" && rm -rfv ../rational-way.github.io/*
 echo "Copying web files to ../rational-way.github.io" && cp -rv web/* ../rational-way.github.io/
-
+echo "Writing CNAME" && echo "rational-way.com" > ../rational-way.github.io/CNAME
