@@ -32,9 +32,7 @@
   [:div
    [:h3 "Work in progress..."]
    [:img {:src    (absolute-url "img/profile.png")
-          :alt    "tomas-zaoral"
-          :width  "200"
-          :height "200"}]
+          :alt    "tomas-zaoral"}]
    [:p "Clojurian, player, dancer."]])
 
 (def highlight-js-headers
