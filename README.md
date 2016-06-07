@@ -1,10 +1,6 @@
 # rational-way-web
 
-Sources of my web page.
-
-## Usage
-
-FIXME
+Sources for [rational-way.com](http://rational-way.com).
 
 ## License
 
