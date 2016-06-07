@@ -30,8 +30,11 @@
 
 (def about-me
   [:div
-   [:h3 "About me"]
-   (el/image (absolute-url "img/profile.png") "tomas-zaoral")
+   [:h3 "Work in progress..."]
+   [:img {:src    (absolute-url "img/profile.png")
+          :alt    "tomas-zaoral"
+          :width  "200"
+          :height "200"}]
    [:p "Clojurian, player, dancer."]])
 
 (def highlight-js-headers
