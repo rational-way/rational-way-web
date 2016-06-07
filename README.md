@@ -1,4 +1,4 @@
-# blog
+# rational-way-web
 
 Sources of my web page.
 
