@@ -1,6 +1,5 @@
 (ns rationalway.web.core
   (:require [hiccup.page :as pg]
-            [hiccup.element :as el]
             [clj-time.core :as t]
             [clj-time.format :as tf]
             [clojure.java.io :as io]
