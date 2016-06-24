@@ -23,6 +23,6 @@ A lot has been said about embracing failure in Enterpreneur community. I'll repe
 #### Personality
 It is crucial to be positive, agreeable person. See other peoples qualities, be supportive. The way you think about others **resonates** with them. Have happy, outgoing, positive, **attractive**, **agreeable** personality - this way you attract people, bussiness and stimulate growth of your bussiness.
 #### Multiple minds
-Your mind is combinantion of creative mind, structured logical thinking, survival instincts, subconciousness and intuition. Recognise that, try to use every mind for this designed purpose.
+Your mind is combinantion of creative mind, structured logical thinking, survival instincts, subconciousness and intuition. Recognise that, try to use every mind for its designed purpose and to its full potential.
 #### Mindsets
 Try to help others, be supportive, imagine what would your hero person do in your situation, build relationship on trust, trust your intuition.
